@@ -8,10 +8,32 @@ import {
 } from '../../actions/quizActionCreator';
 
 class Quiz extends React.Component {
+    componentDidMount() {
+        this.props.fetchQuizzes();
+    }
+
     render() {
+        if (this.props.isLoading) {
+            return (
+                <div>
+                    <h1>Quiz</h1>
+                    <p>Now Loading...</p>
+                    <hr/>
+                    <Link to="/">Home</Link>
+                </div>
+            )
+        }
+        const quiz = this.props.quizzes[this.props.currentIndex];
+        const answers = quiz.shuffledAnswers().map( (answer, index) => {
+            return (
+            <div key={index}>{answer}</div>
+            );
+        });
         return (
             <div>
                 <h1>Quiz</h1>
+                <h2>{quiz.question}</h2>
+                {answers}
                 <hr/>
                 <Link to="/">Home</Link>
             </div>
