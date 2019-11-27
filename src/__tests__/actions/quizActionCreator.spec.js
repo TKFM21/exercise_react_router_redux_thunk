@@ -1,6 +1,6 @@
+import axios from 'axios';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import axios from 'axios';
 import {
     fetchQuizzes,
     FETCH_REQUEST,
