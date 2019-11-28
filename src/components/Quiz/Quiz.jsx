@@ -26,7 +26,7 @@ class Quiz extends React.Component {
         const quiz = this.props.quizzes[this.props.currentIndex];
         const answers = quiz.shuffledAnswers().map( (answer, index) => {
             return (
-            <div key={index}>{answer}</div>
+                <div key={index}>{answer}</div>
             );
         });
         return (
