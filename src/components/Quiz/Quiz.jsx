@@ -8,8 +8,22 @@ import {
 } from '../../actions/quizActionCreator';
 
 class Quiz extends React.Component {
+    constructor(props) {
+        super(props);
+        this.judgeAnswer = this.judgeAnswer.bind(this);
+    }
     componentDidMount() {
         this.props.fetchQuizzes();
+    }
+
+    judgeAnswer(quiz, answer) {
+        if (answer === quiz.correctAnswer) {
+            window.alert('Correct!');
+            this.props.judgeCorrected();
+        } else {
+            window.alert(`Wrong Answer. Correct Answer is ${quiz.correctAnswer}`);
+            this.props.judgeIncorrected();
+        }
     }
 
     render() {
@@ -26,7 +40,12 @@ class Quiz extends React.Component {
         const quiz = this.props.quizzes[this.props.currentIndex];
         const answers = quiz.shuffledAnswers().map( (answer, index) => {
             return (
-                <div key={index}>{answer}</div>
+                <div
+                    key={index}
+                    onClick={() => this.judgeAnswer(quiz, answer)}
+                >
+                    {answer}
+                </div>
             );
         });
         return (
