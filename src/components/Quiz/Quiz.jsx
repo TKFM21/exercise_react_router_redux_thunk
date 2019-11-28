@@ -27,7 +27,9 @@ class Quiz extends React.Component {
     }
 
     render() {
-        if (this.props.isLoading) {
+        const { isLoading, quizzes, currentIndex, numberOfCorrected } = this.props;
+        if (isLoading) {
+            // Quizデータ読み込み時
             return (
                 <div>
                     <h1>Quiz</h1>
@@ -37,7 +39,22 @@ class Quiz extends React.Component {
                 </div>
             )
         }
-        const quiz = this.props.quizzes[this.props.currentIndex];
+        if (currentIndex >= quizzes.length) {
+            // Quiz回答結果の表示
+            return (
+                <div>
+                    <h1>Quiz</h1>
+                    <h2>Result</h2>
+                    <h3>{numberOfCorrected}/{quizzes.length}</h3>
+                    <button onClick={this.props.fetchQuizzes}>Restart</button>
+                    <hr/>
+                    <Link to="/">Home</Link>
+                </div>
+            )
+        }
+
+        // Quiz表示
+        const quiz = quizzes[currentIndex];
         const answers = quiz.shuffledAnswers().map( (answer, index) => {
             return (
                 <div
