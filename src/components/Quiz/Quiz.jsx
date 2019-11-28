@@ -1,11 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
     fetchQuizzes,
     judgeCorrected,
     judgeIncorrected
 } from '../../actions/quizActionCreator';
+import './Quiz.css';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
+
+const Link1 = React.forwardRef((props, ref) => <RouterLink innerRef={ref} {...props} />);
 
 class Quiz extends React.Component {
     constructor(props) {
@@ -31,24 +40,32 @@ class Quiz extends React.Component {
         if (isLoading) {
             // Quizデータ読み込み時
             return (
-                <div>
+                <div className="quiz-container">
                     <h1>Quiz</h1>
                     <p>Now Loading...</p>
                     <hr/>
-                    <Link to="/">Home</Link>
+                    <Typography>
+                        <Link color="textSecondary" component={Link1} to="/">
+                            Home
+                        </Link>
+                    </Typography>
                 </div>
             )
         }
         if (currentIndex >= quizzes.length) {
             // Quiz回答結果の表示
             return (
-                <div>
+                <div className="quiz-container">
                     <h1>Quiz</h1>
                     <h2>Result</h2>
                     <h3>{numberOfCorrected}/{quizzes.length}</h3>
-                    <button onClick={this.props.fetchQuizzes}>Restart</button>
+                    <Button onClick={this.props.fetchQuizzes} variant="outlined" color="secondary">Restart</Button>
                     <hr/>
-                    <Link to="/">Home</Link>
+                    <Typography>
+                        <Link color="textSecondary" component={Link1} to="/">
+                            Home
+                        </Link>
+                    </Typography>
                 </div>
             )
         }
@@ -57,21 +74,30 @@ class Quiz extends React.Component {
         const quiz = quizzes[currentIndex];
         const answers = quiz.shuffledAnswers().map( (answer, index) => {
             return (
-                <div
+                <ListItem
                     key={index}
                     onClick={() => this.judgeAnswer(quiz, answer)}
+                    button
+                    divider
+                    style={{ width: '70%', margin: 'auto', textAlign: 'center' }}
                 >
-                    {answer}
-                </div>
+                    <ListItemText primary={answer} />
+                </ListItem>
             );
         });
         return (
-            <div>
+            <div className="quiz-container">
                 <h1>Quiz</h1>
                 <h2>{quiz.question}</h2>
-                {answers}
+                <List component="nav">
+                    {answers}
+                </List>
                 <hr/>
-                <Link to="/">Home</Link>
+                <Typography>
+                    <Link color="textSecondary" component={Link1} to="/">
+                        Home
+                    </Link>
+                </Typography>
             </div>
         );
     }
